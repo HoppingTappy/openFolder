@@ -18,19 +18,21 @@ bl_info = {
 
 translationDict = {
 	"en_US": {
-		("*", "Open addon folder"):"Open addon folder",
+		("*", "Open addons folder"):"Open addons folder",
 		("*", "Open project folder"):"Open project folder",
+		("*", "Open extensions folder"):"Open extensions folder",
 	},
 	"ja_JP": {
-		("*", "Open addon folder"):"アドオンフォルダを開く",
+		("*", "Open addons folder"):"アドオンフォルダを開く",
 		("*", "Open project folder"):"プロジェクトフォルダを開く",
+		("*", "Open extensions folder"):"エクステンションフォルダを開く",
 	}
 }
 
-class OpenAddonFolder(bpy.types.Operator):
-	bl_idname = "wm.open_addon_folder"
-	bl_label = "Open addon folder"
-	bl_description = "Open addon folder"
+class OpenAddonsFolder(bpy.types.Operator):
+	bl_idname = "wm.open_addons_folder"
+	bl_label = "Open addons folder"
+	bl_description = "Open addons folder"
 	bl_options = {"REGISTER"}
 
 	def execute(self, context):
@@ -53,15 +55,27 @@ class OpenProjectFolder(bpy.types.Operator):
 		os.startfile(p)
 		return {"FINISHED"}
 
+class OpenExtensionsFolder(bpy.types.Operator):
+	bl_idname = "wm.open_extensions_folder"
+	bl_label = "Open extensions folder"
+	bl_description = "Open extensions folder"
+	bl_options = {"REGISTER"}
+
+	def execute(self, context):
+		p = Path(bpy.utils.user_resource("EXTENSIONS")) / "user_default"
+		os.startfile(p)
+		return {"FINISHED"}
 
 def addMenu(self, context):
 	self.layout.separator()
 	self.layout.operator(OpenProjectFolder.bl_idname, icon="FILE_FOLDER",text=bpy.app.translations.pgettext("Open project folder"))
-	self.layout.operator(OpenAddonFolder.bl_idname,   icon="FILE_FOLDER",text=bpy.app.translations.pgettext("Open addon folder"))
+	self.layout.operator(OpenAddonsFolder.bl_idname,   icon="FILE_FOLDER",text=bpy.app.translations.pgettext("Open addons folder"))
+	self.layout.operator(OpenExtensionsFolder.bl_idname,   icon="FILE_FOLDER",text=bpy.app.translations.pgettext("Open extensions folder"))
 
 classes = [
-	OpenAddonFolder,
+	OpenAddonsFolder,
 	OpenProjectFolder,
+	OpenExtensionsFolder,
 ]
 
 def register():
